@@ -1,0 +1,33 @@
+1. vim Dockerfile:- Docker file for Python Application
+FROM python:3
+WORKDIR app
+RUN pip install django==3.2
+copy . /app
+run python manage.py migrate
+CMD ["python","manage.py","runserver","0.0.0.0:8000"]
+2. Build Docker file
+docker build . -t django-todo-app
+3. Check docker images
+docker images
+4. Remove any image
+docker rmi 6cfccdbfca2a
+5. Check all docker containers(active/inactive)
+docker ps -a
+6. Remove Docker container
+docker rm 20b09dce2ceb
+7. Run Docker container
+docker run -d -p 8000:8000 django-todo-app:latest
+8. Check logs of particular Docker container
+docker logs 280be3814c3b
+9. Create Volume
+docker volume create --name django_todo_volume --opt type=none --opt device=/home/ubuntu/volumes/django-todo --opt o=bind
+10. Run container and bind volume with container
+docker run -d -p 8000:8000 --mount source=django_todo_volume,target=/app django-todo-app:latest
+11. Can check go to the intrative session of container  
+docker exec -it cc97fac355555cbb9177e8cb8dc5dfd0fc3816e14d0476d1fd3b4a1deeb83435 bash
+12. Create one file in intrative session of conatiner
+vim test.txt
+13. Go to /home/ubuntu/volumes/django-todo 
+test.txt will be available there.
+14. Create text.txt file in /home/ubuntu/volumes/django-todo
+Same file will be available under intractive session of container.
