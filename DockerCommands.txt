@@ -31,3 +31,36 @@ vim test.txt
 test.txt will be available there.
 14. Create text.txt file in /home/ubuntu/volumes/django-todo
 Same file will be available under intractive session of container.
+15. Create docker-compose.yml file as below when already have Volume
+version: "3.9"
+services:
+  django_todo_app:
+    container_name: "django-todo-app"
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - django_todo_volume:/app
+  mysql_db:
+    container_name: "django-todo-db"
+    image: mysql:5.7
+    ports:
+      - 80:80
+    environment:
+      MYSQL_ROOT_PASSWORD: "test@123"
+volumes:
+  django_todo_volume:
+    external: true
+    name: django_todo_volume
+16. Create volume
+docker volume create --name django_todo_volume --opt type=none --opt device=/home/ubuntu/projects/django-todo-cicd --opt o=bind
+17. Bind volume with container
+docker run -d -p 8000:8000 --mount source=django_todo_volume,tatget=/app djaango-todo:latest
+18. To inspect volume
+docker volume inspect django_todo_volume
+19. TO check mount location of volume
+docker inspect -f '{{ .Mounts }}' 73456fe207fa
+20. docker compose up -d
+21. docker ompose down -d
+ 
+    
